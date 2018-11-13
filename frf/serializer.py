@@ -1,4 +1,5 @@
 from inspect import ismethod
+from datetime import datetime
 
 from apps import db
 
@@ -6,6 +7,7 @@ from apps import db
 class Serializer(object):
     serializer_obj = None
     fields = "__all__"
+    extend_fields = None
 
     _map = {
         "integer": int,
@@ -114,16 +116,52 @@ class Serializer(object):
                         raise TypeError("[%s]必须是[%s]类型" % (_data_key, column_type))
         return data
 
+    def add_extend_fields(self, return_data):
+        if self.extend_fields is None:
+            return return_data
+        for item in self.extend_fields.items():
+            # 查询值
+            data = return_data.get(item[0])
+            if data is not None:
+                return_data.pop(item[0])
+            extra_data = item[1].query.filter_by(**{"id": data}).first()
+
+            extend_fields_in = getattr(self, "extend_fields_" + item[0], None)
+            if extend_fields_in:
+
+                return_data1 = dict(
+                    map(self.mapping_func,
+                        dict(filter(lambda x: x[0] in extend_fields_in, extra_data.__dict__.items())).items()))
+            else:
+                return_data1 = dict(
+                    map(self.mapping_func,
+                        dict(filter(lambda x: not x[0].startswith("_"), extra_data.__dict__.items())).items()))
+            return_data.update(**{item[0]: return_data1})
+        return return_data
+
+    @staticmethod
+    def mapping_func(y):
+        if isinstance(y[1], datetime):
+            temp = y[1].strftime("%Y/%m/%d %H:%M:%S")
+            return (y[0], temp)
+        else:
+            return y
+
     def serialize_return_data(self, data):
         """
         序列化返回值
         :param data: 参数
         :return: 参数data
         """
+
         if self.fields == '__all__':
-            return_data = dict(filter(lambda x: x[0] in self.all_fields, data.items()))
+            return_data = dict(
+                map(self.mapping_func, dict(filter(lambda x: x[0] in self.all_fields, data.items())).items()))
         else:
-            return_data = dict(filter(lambda x: x[0] in self.all_fields and x[0] in self.fields, data.items()))
+            return_data = dict(map(self.mapping_func,
+                                   dict(filter(lambda x: x[0] in self.all_fields and x[0] in self.fields,
+                                               data.items()))))
+        return_data = self.add_extend_fields(return_data)
         return return_data
 
     def save(self, data, instance=None):

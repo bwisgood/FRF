@@ -189,6 +189,7 @@ class DingApi(object):
 
         pprint.pprint(data)
         resp = requests.post(url=url, data=json.dumps(data))
+        print(resp.json())
         return resp.json()
 
     def get_js_ticket(self):
@@ -217,3 +218,41 @@ class DingApi(object):
         response = requests.get(url)
         response_dict = response.json()
         return response_dict
+
+
+if __name__ == '__main__':
+    import os
+    import sys
+
+    BASE_DIR = os.path.dirname(os.path.join(os.path.dirname(__file__)))
+    sys.path.insert(0, BASE_DIR)
+    ding = DingApi("ding5a306c83d415da11", "psqRy5dB8_1v0zaP2gvNe_SRH8nkWc5fGxunryN-pyNXo2WLHsF42zmMpJDBLRDw",
+                   199588151)
+
+    ding.get_ding_department()
+    print(ding.get_ding_user_list(70602298))
+    pprint.pprint(ding.get_user_info(213953376321811684))
+    # oa = {
+    #     "message_url": "http://dingtalk.com",
+    #     "pc_message_url": "http://dingtalk.com",
+    #     "head": {
+    #         "bgcolor": "FFBBBBBB",
+    #         "text": "头部标题"
+    #     },
+    #     "body": {
+    #         "title": "正文标题",
+    #         "form": [
+    #             {
+    #                 "key": "姓名:",
+    #                 "value": "张三"
+    #             },
+    #             {
+    #                 "key": "年龄:",
+    #                 "value": "20"
+    #             }
+    #         ],
+    #         "content": "大段文本大段文本大段文本大段文本大段文本大段文本大段文本大段文本大段文本大段文本大段文本大段文本",
+    #         "author": "李四"
+    #     }
+    # }
+    # print(ding.send_message("1946115421972823"))

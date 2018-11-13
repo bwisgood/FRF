@@ -73,6 +73,7 @@ class APIView(MethodView):
         else:
             query_set = serializer.model_class.query
         # query_set = self.query_set
+
         meth_name = request.method.lower() + "_after_get_query_set"
 
         meth = getattr(self, meth_name, None)
@@ -225,4 +226,3 @@ class APIView(MethodView):
     def list_paginate(self, query_set, page_num=1, size=10, error=False):
         query_set = query_set.paginate(int(page_num), int(size), error)
         return query_set
-

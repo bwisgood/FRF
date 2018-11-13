@@ -33,7 +33,6 @@ class ListAPIView(object):
         for instance in all_data:
             instance_dict = {field: getattr(instance, field, None) for field in serializer.all_fields}
             data_list.append(serializer.serialize_return_data(instance_dict))
-        # todo jsonresp
 
         return jsonify(code=RET.OK, msg="ok", data=data_list)
 
