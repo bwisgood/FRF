@@ -34,6 +34,8 @@ class APIView(MethodView):
     paginate_field = ("page_num", "size", "error")
     pk_field = "id"
     no_body_method = ("get", "head", "option")
+    # order_by_field = ("id","-age")
+    order_by_field = None
 
     def get_request_data(self):
         """
@@ -81,7 +83,27 @@ class APIView(MethodView):
             query_set = meth(query_set)
         return query_set
 
-    def filter_queryset(self):
+    def _order_by_query_set(self, query_set):
+        serializer = self.get_serializer_class()
+        if self.order_by_field is None:
+            return query_set
+        order_data = []
+        for ob_field in self.order_by_field:
+            if ob_field.startswith("-"):
+                field = ob_field[1:]
+                ob_field_attr = getattr(serializer.model_class, field, None)
+                if ob_field_attr is None:
+                    raise SQLAlchemyError("%s not in %s" % (field, serializer.model_class.__tablename__))
+                order_data.append(ob_field_attr.desc())
+            else:
+                ob_field_attr = getattr(serializer.model_class, ob_field, None)
+                if ob_field_attr is None:
+                    raise SQLAlchemyError("%s not in %s" % (ob_field, serializer.model_class.__tablename__))
+                order_data.append(ob_field_attr)
+
+        return query_set.order_by(*order_data)
+
+    def _filter_queryset(self):
         """
         获取过滤后的查询集
         :return:
@@ -92,10 +114,17 @@ class APIView(MethodView):
             request_data = self.get_request_data()
             query_look_up = {}
             for _look_up in self.look_up:
+                if not request_data:
+                    continue
                 rd = request_data.get(_look_up)
                 if rd:
                     query_look_up[_look_up] = rd
             return self.get_query_set().filter_by(**query_look_up)
+
+    def filter_queryset(self):
+        query_set = self._filter_queryset()
+        query_set = self._order_by_query_set(query_set)
+        return query_set
 
     def get_instance(self, filter_data):
         instance_trial = self.filter_queryset().filter_by(**filter_data).all()
