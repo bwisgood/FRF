@@ -247,8 +247,10 @@ class APIView(MethodView):
 
         # serializer = self.get_serializer_class()
         # serializer.destroy(instance)
-
-        db.session.delete(instance)
+        if hasattr(instance, "is_delete"):
+            instance.is_delete = 1
+        else:
+            db.session.delete(instance)
         db.session.commit()
         return None
 
