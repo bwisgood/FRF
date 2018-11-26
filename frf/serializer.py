@@ -124,6 +124,8 @@ class Serializer(object):
             data = return_data.get(item[0])
             if data is not None:
                 return_data.pop(item[0])
+            else:
+                continue
             extra_data = item[1].query.filter_by(**{"id": data}).first()
 
             extend_fields_in = getattr(self, "extend_fields_" + item[0], None)

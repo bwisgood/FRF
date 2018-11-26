@@ -71,7 +71,7 @@ class CreateAPIView(APIView):
         # 返回保存的这条数据的信息
         instance_dict = {field: getattr(instance, field, None) for field in serializer.all_fields}
         data = serializer.serialize_return_data(instance_dict)
-        return jsonify(data)
+        return jsonify(code=RET.DBERR, msg='数据库错误', data=data)
 
 
 class UpdateAPIView(APIView):
@@ -82,7 +82,7 @@ class UpdateAPIView(APIView):
 
         instance = self.get_instance(filter_data={self.pk_field: filter_data})
         if not instance:
-            return jsonify("未查找到数据")
+            return jsonify(code=RET.DBERR, msg='未查找到数据', data="")
         try:
             serializer, instance = self.perform_save(request_data, instance)
         except SQLAlchemyError:
@@ -132,7 +132,8 @@ class DeleteAPIView(APIView):
         filter_data = request_data.get(self.pk_field)
 
         instance = self.get_instance(filter_data={self.pk_field: filter_data})
+
         if not instance:
-            return None
+            return jsonify(code=RET.NODATA, msg='nodata', data="")
         self.perform_delete(instance)
         return jsonify(code=RET.OK, msg='ok', data="")

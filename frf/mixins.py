@@ -18,8 +18,8 @@ class ListAPIView(object):
             size = request_data.pop(self.paginate_field[1], None)
             error = request_data.pop(self.paginate_field[2], False)
 
-        self.look_up = request_data
-        filter_queryset = self.get_query_set()
+        # self.look_up = request_data
+        filter_queryset = self.filter_queryset()
         if page_num and size:
             all_data = self.list_paginate(filter_queryset, page_num, size, error).items
         else:
