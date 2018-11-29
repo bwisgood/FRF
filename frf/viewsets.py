@@ -79,8 +79,10 @@ class UpdateAPIView(APIView):
         request_data = self.get_request_data()
 
         filter_data = request_data.get(self.pk_field)
-
-        instance = self.get_instance(filter_data={self.pk_field: filter_data})
+        try:
+            instance = self.get_instance(filter_data={self.pk_field: filter_data})
+        except SQLAlchemyError as e:
+            return jsonify(code=RET.NODATA, msg='获取数据异常', data="")
         if not instance:
             return jsonify(code=RET.DBERR, msg='未查找到数据', data="")
         try:
@@ -104,8 +106,10 @@ class UpdateAPIView(APIView):
         request_data = self.get_request_data()
 
         filter_data = request_data.get(self.pk_field)
-
-        instance = self.get_instance(filter_data={self.pk_field: filter_data})
+        try:
+            instance = self.get_instance(filter_data={self.pk_field: filter_data})
+        except SQLAlchemyError as e:
+            return jsonify(code=RET.NODATA, msg="获取数据异常", data="")
         if not instance:
             return jsonify("未查找到数据")
         try:
@@ -130,9 +134,10 @@ class DeleteAPIView(APIView):
     def delete(self):
         request_data = self.get_request_data()
         filter_data = request_data.get(self.pk_field)
-
-        instance = self.get_instance(filter_data={self.pk_field: filter_data})
-
+        try:
+            instance = self.get_instance(filter_data={self.pk_field: filter_data})
+        except SQLAlchemyError:
+            return jsonify(code=RET.DBERR, msg='获取数据异常', data="")
         if not instance:
             return jsonify(code=RET.NODATA, msg='nodata', data="")
         self.perform_delete(instance)

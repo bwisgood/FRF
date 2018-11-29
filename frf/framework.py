@@ -55,6 +55,17 @@ class APIView(MethodView):
                 #     request_data = request.form.to_dict()
         else:
             request_data = request.args.to_dict() if request.args else None
+
+        global_func = getattr(self, "change_request_data")
+        if global_func:
+            request_data = global_func(request_data)
+
+        request_meth = request.method.lower()
+        func = getattr(self, request_meth + "_change_request_data")
+
+        if func:
+            request_data = request_meth(request_data)
+
         print(request_data)
         return request_data
 
