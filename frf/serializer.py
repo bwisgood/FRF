@@ -162,8 +162,12 @@ class Serializer(object):
         else:
             return_data = dict(map(self.mapping_func,
                                    dict(filter(lambda x: x[0] in self.all_fields and x[0] in self.fields,
-                                               data.items()))))
+                                               data.items())).items()))
         return_data = self.add_extend_fields(return_data)
+        return_data = self.handle_return_data(return_data)
+        return return_data
+
+    def handle_return_data(self, return_data):
         return return_data
 
     def save(self, data, instance=None):

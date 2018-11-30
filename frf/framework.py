@@ -36,6 +36,7 @@ class APIView(MethodView):
     no_body_method = ("get", "head", "option")
     # order_by_field = ("id","-age")
     order_by_field = None
+    like_field = None
 
     def get_request_data(self):
         """
@@ -56,15 +57,15 @@ class APIView(MethodView):
         else:
             request_data = request.args.to_dict() if request.args else None
 
-        global_func = getattr(self, "change_request_data")
+        global_func = getattr(self, "change_request_data", None)
         if global_func:
             request_data = global_func(request_data)
 
         request_meth = request.method.lower()
-        func = getattr(self, request_meth + "_change_request_data")
+        func = getattr(self, request_meth + "_change_request_data", None)
 
         if func:
-            request_data = request_meth(request_data)
+            request_data = func(request_data)
 
         print(request_data)
         return request_data
@@ -86,6 +87,9 @@ class APIView(MethodView):
         else:
             query_set = serializer.model_class.query
         # query_set = self.query_set
+        global_func = getattr(self, "after_get_query_set", None)
+        if global_func:
+            query_set = global_func(query_set)
 
         meth_name = request.method.lower() + "_after_get_query_set"
 
@@ -119,22 +123,38 @@ class APIView(MethodView):
         获取过滤后的查询集
         :return:
         """
-        if self.look_up is None:
-            return self.get_query_set()
+        if request.method.lower() == "get":
+            if self.look_up is None:
+                return self.get_query_set()
+            else:
+                request_data = self.get_request_data()
+                query_look_up = {}
+                for _look_up in self.look_up:
+                    if not request_data:
+                        continue
+                    rd = request_data.get(_look_up)
+                    if rd:
+                        query_look_up[_look_up] = rd
+                return self.get_query_set().filter_by(**query_look_up)
         else:
+            return self.get_query_set()
+
+    def _like_query_set(self, query_set):
+        if self.like_field:
+            serializer = self.get_serializer_class()
             request_data = self.get_request_data()
-            query_look_up = {}
-            for _look_up in self.look_up:
-                if not request_data:
-                    continue
-                rd = request_data.get(_look_up)
-                if rd:
-                    query_look_up[_look_up] = rd
-            return self.get_query_set().filter_by(**query_look_up)
+            for field in self.like_field:
+
+                attr = getattr(serializer.serializer_obj, field, None)
+                if attr:
+                    query_set = query_set.filter(attr.like(request_data.get(field)))
+        return query_set
 
     def filter_queryset(self):
         query_set = self._filter_queryset()
-        query_set = self._order_by_query_set(query_set)
+        if request.method.lower() == "get":
+            query_set = self._like_query_set(query_set)
+            query_set = self._order_by_query_set(query_set)
         return query_set
 
     def get_instance(self, filter_data):

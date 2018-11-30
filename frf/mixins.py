@@ -78,8 +78,11 @@ class UpdateAPIView(object):
         request_data = self.get_request_data()
 
         filter_data = request_data.get(self.pk_field)
-
-        instance = self.get_instance(filter_data={self.pk_field: filter_data})
+        print(filter_data)
+        try:
+            instance = self.get_instance(filter_data={self.pk_field: filter_data})
+        except SQLAlchemyError:
+            return jsonify(code=RET.DBERR, msg='查询数据异常', data="")
         if not instance:
             return jsonify("未查找到数据")
         try:
@@ -92,8 +95,11 @@ class UpdateAPIView(object):
             return jsonify(code=RET.PARAMERR, msg='参数不齐', data="")
         except Exception as e:
             return jsonify(code=RET.UNKOWNERR, msg='未知错误', data=e.__str__())
+        try:
+            instance_dict = {field: getattr(instance, field, None) for field in serializer.all_fields}
+        except SQLAlchemyError:
+            return jsonify(code=RET.DBERR, msg='数据库错误', data="")
 
-        instance_dict = {field: getattr(instance, field, None) for field in serializer.all_fields}
         data = serializer.serialize_return_data(instance_dict)
         if not data:
             return jsonify(code=RET.NODATA, msg="没有数据", data="")
@@ -103,8 +109,10 @@ class UpdateAPIView(object):
         request_data = self.get_request_data()
 
         filter_data = request_data.get(self.pk_field)
-
-        instance = self.get_instance(filter_data={self.pk_field: filter_data})
+        try:
+            instance = self.get_instance(filter_data={self.pk_field: filter_data})
+        except SQLAlchemyError:
+            return jsonify(code=RET.DBERR, msg='数据库查询错误', data="")
         if not instance:
             return jsonify("未查找到数据")
         try:
@@ -129,8 +137,10 @@ class DeleteAPIView(object):
     def delete(self):
         request_data = self.get_request_data()
         filter_data = request_data.get(self.pk_field)
-
-        instance = self.get_instance(filter_data={self.pk_field: filter_data})
+        try:
+            instance = self.get_instance(filter_data={self.pk_field: filter_data})
+        except SQLAlchemyError:
+            return jsonify(code=RET.DBERR, msg='数据查询错误', data="")
         if not instance:
             return None
         self.perform_delete(instance)
