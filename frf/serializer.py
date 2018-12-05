@@ -143,11 +143,16 @@ class Serializer(object):
 
     @staticmethod
     def mapping_func(y):
+        print(y)
         if isinstance(y[1], datetime):
             temp = y[1].strftime("%Y/%m/%d %H:%M:%S")
             return (y[0], temp)
         else:
             return y
+
+    def object_to_data(self, instance):
+        instance_dict = {field: getattr(instance, field, None) for field in self.all_fields}
+        return instance_dict
 
     def serialize_return_data(self, data):
         """

@@ -57,6 +57,9 @@ class APIView(MethodView):
         else:
             request_data = request.args.to_dict() if request.args else None
 
+        if request_data is None:
+            request_data = {}
+
         global_func = getattr(self, "change_request_data", None)
         if global_func:
             request_data = global_func(request_data)
