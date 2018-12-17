@@ -37,6 +37,13 @@ class APIView(MethodView):
     # order_by_field = ("id","-age")
     order_by_field = None
     like_field = None
+    auth_manager = None
+    special_look_up = None
+
+    def __init__(self):
+        super(APIView, self).__init__()
+        self.request_data = self.get_request_data()
+        self.serializer = self.get_serializer_class()
 
     def get_request_data(self):
         """
@@ -126,31 +133,65 @@ class APIView(MethodView):
         获取过滤后的查询集
         :return:
         """
+        qs = self.get_query_set()
         if request.method.lower() == "get":
             if self.look_up is None:
-                return self.get_query_set()
+                return qs
             else:
-                request_data = self.get_request_data()
                 query_look_up = {}
                 for _look_up in self.look_up:
-                    if not request_data:
-                        continue
-                    rd = request_data.get(_look_up)
+                    if not self.request_data:
+                        break
+                    rd = self.request_data.get(_look_up)
                     if rd:
                         query_look_up[_look_up] = rd
-                return self.get_query_set().filter_by(**query_look_up)
+                return qs.filter_by(**query_look_up)
         else:
-            return self.get_query_set()
+            return qs
+
+    def _special_filter_queryset(self, qs):
+        """
+        特殊过滤 gt lt in not_in
+        :return:
+        """
+        if self.special_look_up is None:
+            return qs
+        for i in self.special_look_up:
+            qs = self._method_mix(qs, i)
+        return qs
+
+    def _method_mix(self, qs, lk):
+        # 小于，大于，不等于，in列表
+        meth_list = ["<", ">", "!", "["]
+        method = lk[0:1]
+        if method not in meth_list:
+            return qs
+
+        field = lk[1:]
+        model_class = self.serializer.model_class
+        attr = getattr(model_class, field, None)
+        if not attr:
+            raise SQLAlchemyError("%s has no field %s" % ("table", field))
+
+        if method == "<":
+            qs = qs.filter(attr < self.request_data.get(field))
+        elif method == ">":
+            qs = qs.filter(attr > self.request_data.get(field))
+        elif method == "!":
+            qs = qs.filter(attr != self.request_data.get(field))
+        elif method == "[":
+            qs = qs.filter(attr.in_(self.request_data.get(field)))
+
+        return qs
 
     def _like_query_set(self, query_set):
         if self.like_field:
-            serializer = self.get_serializer_class()
-            request_data = self.get_request_data()
             for field in self.like_field:
 
-                attr = getattr(serializer.serializer_obj, field, None)
+                attr = getattr(self.serializer.serializer_obj, field, None)
                 if attr:
-                    query_set = query_set.filter(attr.like(request_data.get(field)))
+                    if self.request_data.get(field):
+                        query_set = query_set.filter(attr.like("%" + self.request_data.get(field) + "%"))
         return query_set
 
     def filter_queryset(self):
@@ -158,6 +199,7 @@ class APIView(MethodView):
         if request.method.lower() == "get":
             query_set = self._like_query_set(query_set)
             query_set = self._order_by_query_set(query_set)
+            query_set = self._special_filter_queryset(query_set)
         return query_set
 
     def get_instance(self, filter_data):
@@ -241,29 +283,29 @@ class APIView(MethodView):
             if self.pk_field in request.args:
                 meth = getattr(self, 'retrieve', None)
                 print(meth)
+        self.meth = meth
         assert meth is not None, 'Unimplemented method %r' % request.method
         return meth(*args, **kwargs)
 
     def perform_save(self, request_data, temp_instance=None):
         """
         执行创建
-        :param serializer:
+        :param temp_instance:
         :param request_data:
         :return:
         """
-        serializer = self.get_serializer_class()
 
         #
 
         # filter_data = request_data.get(self.pk_field)
         # temp_instance = self.get_instance(filter_data={self.pk_field: filter_data})
         # print(id(temp_instance))
-        #
+
         try:
             if temp_instance is None:
-                instance = serializer.save(request_data)
+                instance = self.serializer.save(request_data)
             else:
-                instance = serializer.save(request_data, temp_instance)
+                instance = self.serializer.save(request_data, temp_instance)
 
         except AttributeError:
             return None
@@ -272,8 +314,21 @@ class APIView(MethodView):
         except SQLAlchemyError as e:
             print(e.__str__())
             return None
-        return serializer, instance
+        return self.serializer, instance
         # return serializer, temp_instance
+
+    def bulk_save(self, request_data):
+        """
+        批量添加
+        :param request_data:
+        :return:
+        """
+        try:
+            db.session.bulk_insert_mappings(self.serializer.model_class, request_data)
+        except Exception as e:
+            db.session.rollback()
+            return False
+        return True
 
     def perform_delete(self, instance):
         print(instance)
@@ -287,6 +342,21 @@ class APIView(MethodView):
             db.session.delete(instance)
         db.session.commit()
         return None
+
+    def bulk_delete(self, pk_list):
+        """
+        批量删除
+        :param id_list:
+        :return:
+        """
+        pk_attr = getattr(self.serializer.model_class, self.pk_field, None)
+        try:
+            self.serializer.model_class.filter(pk_attr.in_(pk_list)).delete(synchronize_session=False)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return False
+        return True
 
     def list_paginate(self, query_set, page_num=1, size=10, error=False):
         query_set = query_set.paginate(int(page_num), int(size), error)
