@@ -19,7 +19,7 @@ class ListAPIView(APIView):
             error = request_data.pop(self.paginate_field[2], False)
 
         self.look_up = request_data
-        filter_queryset = self.get_query_set()
+        filter_queryset = self.filter_queryset()
         if page_num and size:
             all_data = self.list_paginate(filter_queryset, page_num, size, error).items
         else:
@@ -57,7 +57,12 @@ class RetrieveAPIView(APIView):
 class CreateAPIView(APIView):
     def post(self):
         # 获取参数
-        request_data = self.get_request_data()
+        request_data = self.request_data
+        if isinstance(request_data, list):
+            if self.bulk_save(request_data):
+                return jsonify(code=RET.OK, msg='ok', data="")
+            else:
+                return jsonify(code=RET.DBERR, msg='dberror', data="")
         try:
             serializer, instance = self.perform_save(request_data)
         except SQLAlchemyError:
@@ -71,7 +76,7 @@ class CreateAPIView(APIView):
         # 返回保存的这条数据的信息
         instance_dict = {field: getattr(instance, field, None) for field in serializer.all_fields}
         data = serializer.serialize_return_data(instance_dict)
-        return jsonify(code=RET.DBERR, msg='数据库错误', data=data)
+        return jsonify(code=RET.OK, msg='ok', data=data)
 
 
 class UpdateAPIView(APIView):
@@ -132,7 +137,13 @@ class UpdateAPIView(APIView):
 
 class DeleteAPIView(APIView):
     def delete(self):
-        request_data = self.get_request_data()
+        request_data = self.request_data
+        if isinstance(request_data,list):
+            if self.bulk_delete(request_data):
+                return jsonify(code=RET.OK, msg='ok', data="")
+            else:
+                return jsonify(code=RET.DBERR, msg='数据库错误', data="")
+
         filter_data = request_data.get(self.pk_field)
         try:
             instance = self.get_instance(filter_data={self.pk_field: filter_data})

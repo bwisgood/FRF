@@ -56,7 +56,12 @@ class RetrieveAPIView(object):
 class CreateAPIView(object):
     def post(self):
         # 获取参数
-        request_data = self.get_request_data()
+        request_data = self.request_data
+        if isinstance(request_data, list):
+            if self.bulk_save(request_data):
+                return jsonify(code=RET.OK, msg='ok', data="")
+            else:
+                return jsonify(code=RET.DBERR, msg='dberror', data="")
         try:
             serializer, instance = self.perform_save(request_data)
         except SQLAlchemyError:
@@ -135,7 +140,13 @@ class UpdateAPIView(object):
 
 class DeleteAPIView(object):
     def delete(self):
-        request_data = self.get_request_data()
+        request_data = self.request_data
+        if isinstance(request_data,list):
+            if self.bulk_delete(request_data):
+                return jsonify(code=RET.OK, msg='ok', data="")
+            else:
+                return jsonify(code=RET.DBERR, msg='数据库错误', data="")
+
         filter_data = request_data.get(self.pk_field)
         try:
             instance = self.get_instance(filter_data={self.pk_field: filter_data})

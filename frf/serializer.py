@@ -143,7 +143,6 @@ class Serializer(object):
 
     @staticmethod
     def mapping_func(y):
-        print(y)
         if isinstance(y[1], datetime):
             temp = y[1].strftime("%Y/%m/%d %H:%M:%S")
             return (y[0], temp)
@@ -205,3 +204,7 @@ class Serializer(object):
 
     def __str__(self):
         return "|".join(self.all_fields)
+
+
+class MultiSerializer(object):
+    pass
