@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style type="text/css">
+table.gridtable {
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table.gridtable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+}
+table.gridtable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
+</style>
+
+</head>
+<body>
+123
+<!--<ul>-->
+    {% for item in all_data %}
+        <!--<li>-->
+            <!--路由:{{ item.rule }}-->
+        <!--</li>-->
+
+
+            {% for doc_data in item.doc_data_list %}
+                {% if doc_data.method != "HEAD" and doc_data.method != "OPTIONS" %}
+                    <hr>
+
+                    {{doc_data.method}}
+                    {{doc_data.rule}}
+                    <table class="gridtable">
+                        <tr>
+                            <th>名称</th>
+                            <th>类型</th>
+                            <th>是否必填</th>
+                            <th>备注</th>
+                        </tr>
+                    {%for ip in doc_data.input_params%}
+                    <tr>
+                        <td>{{ip.name}}</td>
+                        <td>{{ip.type_}}</td>
+                        <td>
+                            {% if ip.fill %}
+                            必填
+                            {% else %}
+                            非必填
+                            {% endif %}
+                        </td>
+                        <td>{{ip.comment}}</td>
+                    </tr>
+                    {% endfor %}
+                    </table>
+                    <hr>
+                {% endif %}
+            {% endfor %}
+
+    {% endfor %}
+<!--</ul>-->
+
+</body>
+</html>
