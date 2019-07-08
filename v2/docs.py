@@ -38,6 +38,7 @@ class BaseDocData(object):
         self.doc_data_list = []
 
         output_params = self.extract_output_params()
+        print(output_params)
         for method in self.methods:
             input_params = self.extract_input_params(method)
             doc_data = DocData(method=method, rule=self.rule, input_params=input_params,
@@ -65,7 +66,8 @@ class BaseDocData(object):
                 _column = getattr(self.view_func.serializer.model_class, field, None)
                 if not _column:
                     continue
-                p.append(Param(name=field, type_=_column.type.__visit_name__, fill=_column.nullable, comment=translate(field)))
+                p.append(Param(name=field, type_=_column.type.__visit_name__, fill=_column.nullable,
+                               comment=translate(field)))
                 # self.input_params.append(p)
             pass
         elif method == "PUT":
@@ -74,7 +76,8 @@ class BaseDocData(object):
                 _column = getattr(self.view_func.serializer.model_class, field, None)
                 if not _column:
                     continue
-                p.append(Param(name=field, type_=_column.type.__visit_name__, fill=_column.nullable, comment=translate(field)))
+                p.append(Param(name=field, type_=_column.type.__visit_name__, fill=_column.nullable,
+                               comment=translate(field)))
                 # self.input_params.append(p)
         elif method == "DELETE":
             p.append(Param(name="id", type_="int", fill=True, comment="主键id"))
@@ -88,8 +91,12 @@ class BaseDocData(object):
             f = s.get_all_fields()
         else:
             f = getattr(s, "fields", None)
+        fs = []
+        for field in f:
+            _column = getattr(self.view_func.serializer.model_class, field, None)
+            fs.append(Param(name=field, type_=_column.type.__visit_name__, comment=translate(field)))
 
-        return f
+        return fs
 
     def __str__(self):
         return "[endpoint:{} rule:{} methods:{} view_func:{}]".format(self.endpoint, self.rule, self.methods,
@@ -108,7 +115,7 @@ class Param(object):
     def __init__(self, **kwargs):
         self.name = kwargs.pop("name")
         self.type_ = kwargs.pop("type_")
-        self.fill = kwargs.pop("fill")
+        self.fill = kwargs.pop("fill", None)
         self.comment = kwargs.pop("comment")
 
 

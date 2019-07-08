@@ -7,6 +7,24 @@ from sqlalchemy.exc import SQLAlchemyError
 from inspect import isfunction
 from v2.docs import DocDataCollector
 
+OK = "0"
+DBERR = "4001"
+NODATA = "4002"
+DATAEXIST = "4003"
+DATAERR = "4004"
+SESSIONERR = "4101"
+LOGINERR = "4102"
+PARAMERR = "4103"
+USERERR = "4104"
+ROLEERR = "4105"
+PWDERR = "4106"
+REQERR = "4201"
+IPERR = "4202"
+THIRDERR = "4301"
+IOERR = "4302"
+SERVERERR = "4500"
+UNKOWNERR = "4501"
+
 
 def request_wrapper(func):
     @wraps(func)
@@ -35,6 +53,7 @@ class FlaskRestFramework(object):
             self.init_app(app, **kwargs)
 
         self.doc_data_collector = DocDataCollector()
+        self.get_app_url_map()
         self.generate_html_interface_docs()
 
     def init_app(self, app, **kwargs):
@@ -343,6 +362,15 @@ class GetView(ApiView):
         return jsonify(code=RET.OK, msg='查询成功', data=items)
 
 
+class RetrieveView(ApiView):
+    def retrieve(self):
+        # todo filling the blank
+        pass
+
+
+import json
+
+
 class PostView(ApiView):
     def post(self):
         # 1.接收参数
@@ -416,8 +444,6 @@ if __name__ == '__main__':
     from flask_sqlalchemy import SQLAlchemy
 
     db = SQLAlchemy(app)
-    frf = FlaskRestFramework(app)
-
     from v2.serializer import Serializer
 
 
@@ -439,6 +465,7 @@ if __name__ == '__main__':
 
     app.add_url_rule("/a", view_func=A)
 
-    frf.get_app_url_map()
+    frf = FlaskRestFramework(app)
+
     # frf.collect_sub_class_use_frf()
     app.run(debug=True)

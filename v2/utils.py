@@ -120,6 +120,8 @@ d = Dict()
 
 
 def translate(word):
-
-    json_result = d.dictionary(word, dst='zh', src='en')
+    try:
+        json_result = d.dictionary(word, dst='zh', src='en')
+    except:
+        return "翻译失败"
     return json_result['trans_result']['data'][0]['dst']

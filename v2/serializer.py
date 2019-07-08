@@ -90,10 +90,9 @@ class Serializer(object):
             return_data.update(**{item[0]: return_data1})
         return return_data
 
-    @staticmethod
-    def mapping_func(y):
+    def mapping_func(self, y):
         if isinstance(y[1], datetime):
-            temp = y[1].strftime("%Y/%m/%d %H:%M:%S")
+            temp = y[1].strftime(self.data_time_format)
             return y[0], temp
         else:
             return y
