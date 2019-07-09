@@ -18,8 +18,8 @@ class FlaskRestFramework(object):
             self.init_app(app, **kwargs)
 
         self.doc_data_collector = DocDataCollector()
-        self.get_app_url_map()
-        self.generate_html_interface_docs()
+        # self.get_app_url_map()
+        # self.generate_html_interface_docs()
 
     def init_app(self, app, **kwargs):
         self.app = app
@@ -74,7 +74,7 @@ class FlaskRestFramework(object):
     def get_app_url_map(self):
         rl = []
         sl = []
-        from v2.docs import BaseDocData
+        from v3.docs import BaseDocData
         for i in list(self.app.url_map.iter_rules()):
             bs = {}
             bs["endpoint"] = i.endpoint

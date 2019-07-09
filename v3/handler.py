@@ -43,8 +43,8 @@ class ApiView(MethodView):
 
     def __init__(self):
         # 继承父类的初始化方法
-        super().__init__()
-
+        # super().__init__(data)
+        super(ApiView, self).__init__()
         # 是否分页
         self.has_page = False
         self.page_num = None
@@ -56,14 +56,21 @@ class ApiView(MethodView):
         self.default_empty_data = self.empty_response
 
         # 获取url参数
-        self.url_data = self.url_data if self.get_url_data() else {}
+        self.url_data = self.get_url_data()
+        self.url_data = self.url_data if self.url_data else {}
 
         # 获取body的参数
-        self.body_data = self.body_data if self.get_body_data() else {}
+        self.body_data = self.get_body_data()
+        self.body_data = self.body_data if self.body_data else {}
 
         # 组合参数
-        # self.data = self.data if self.get_data() else {}
+        self.data = self.get_data()
+        print(self.data)
+        if not self.data:
+            print(123)
+            self.data = {}
 
+        print("data", self.data)
         # 通过serializer的model_class来获取一个基础查询
         self.qs = DataQuery(self.serializer.model_class, data=self.data, pk_field=self.pk_field,
                             fields=self.serializer.fields, paginate_field=self.paginate_field, query_set=self.query_set)
@@ -92,7 +99,9 @@ class ApiView(MethodView):
             if self.pk_field in request.args:
                 before_request_meth = getattr(self, 'before_retrieve', None)
 
-        self.data = self.get_data()
+        # self.data = self.get_data()
+        # if not self.data:
+        #     self.data = {}
 
         if before_request_meth:
             self.data = self.before_request_meth(self.data)
@@ -132,10 +141,11 @@ class ApiView(MethodView):
     def default_result_handler(self, result):
         # 如果是两个参数 code, data 两个参数的时候会使用默认的code对应的msg
         # 如果是三个参数 code, msg, data
+        print(type(result))
         if len(result) == 3:
             return jsonify(code=result[0], msg=result[1], data=result[2])
         elif len(result) == 2:
-            return jsonify(code=result[0], msg=error_map[result[0]], data=result)
+            return jsonify(code=result[0], msg=error_map[result[0]], data=result[1])
         else:
             raise ArgumentException
 
@@ -164,9 +174,10 @@ class ApiView(MethodView):
 
     def get_data(self):
         if request.method.lower() in ["get", "option", "head"]:
-            return self.get_url_data()
+            return self.url_data
         else:
-            return self.get_body_data().update(**self.get_url_data())
+            self.body_data.update(**self.url_data)
+            return self.body_data
 
     # def filter_request_url_data(self):
     #     # 过滤请求数据查询对应的值
