@@ -91,8 +91,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/requirements.txt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="315">
-                  <caret line="21" column="12" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="12" />
+                <state relative-caret-position="660">
+                  <caret line="44" column="22" lean-forward="true" selection-start-line="44" selection-start-column="22" selection-end-line="44" selection-end-column="22" />
                 </state>
               </provider>
             </entry>
@@ -258,6 +258,10 @@
               <item name="FRF" type="b2602c69:ProjectViewProjectNode" />
               <item name="FRF" type="462c0819:PsiDirectoryNode" />
               <item name="ding_api" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FRF" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
           </expand>
           <select />
@@ -441,12 +445,12 @@
       <workItem from="1562339228704" duration="206000" />
       <workItem from="1562339486479" duration="778000" />
       <workItem from="1562353576367" duration="5008000" />
-      <workItem from="1562578702464" duration="17927000" />
+      <workItem from="1562578702464" duration="18384000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="152468000" />
+    <option name="totallyTimeSpent" value="152925000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -460,7 +464,7 @@
   <component name="ToolWindowManager">
     <frame x="-655" y="-1417" width="2560" height="1417" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49891067" visible="true" weight="0.12192216" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49891067" visible="true" weight="0.12192216" />
       <window_info id="Structure" order="1" sideWeight="0.50108933" side_tool="true" weight="0.12035541" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -473,7 +477,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4911147" visible="true" weight="0.1871698" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4911147" visible="true" weight="0.1871698" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5088853" side_tool="true" weight="0.33576643" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.329927" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -534,7 +538,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/migrations/versions/13454f9aa973_.py" />
     <entry file="file://$USER_HOME$/Library/Caches/PyCharm2018.3/python_stubs/84650780/builtins.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="421">
@@ -899,8 +902,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/requirements.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="12" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="12" />
+        <state relative-caret-position="660">
+          <caret line="44" column="22" lean-forward="true" selection-start-line="44" selection-start-column="22" selection-end-line="44" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wxpay.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="940">
+          <caret line="159" lean-forward="true" selection-start-line="159" selection-end-line="159" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
