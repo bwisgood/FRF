@@ -44,7 +44,7 @@ class PostView(ApiView):
         # 2.4 将增加后的实例做序列化
         # 2.5 交给View
         # 3. View组织参数返回
-        return jsonify(code=RET.OK, msg='添加成功', data=data)
+        return RET.OK, data
 
 
 class PutView(ApiView):

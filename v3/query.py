@@ -32,7 +32,7 @@ class DataQuery(object):
         else:
             self.qs = qs
 
-        self.db = current_app.extensions.get("sqlalchemy")
+        self.db = current_app.extensions.get("sqlalchemy").db
 
     def _filter_query_set(self, filter_data):
         # 过滤查询集
@@ -130,7 +130,7 @@ class DataQuery(object):
             return "post"
 
     def save(self, instance):
-        self.db.add(instance)
+        self.db.session.add(instance)
         self.commit()
         return instance
 
