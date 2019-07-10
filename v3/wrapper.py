@@ -1,5 +1,6 @@
 from .handler import ApiView
 from .docs import DocDataCollector
+from .exceptions import FRFErrorHandler
 
 
 class FlaskRestFramework(object):
@@ -10,6 +11,11 @@ class FlaskRestFramework(object):
     used_cls = []
 
     def __init__(self, app=None, **kwargs):
+        self.accept_errors = kwargs.pop("accept_errors", None)
+        self.global_request_auth_cls = kwargs.pop("global_request_auth", None)
+
+        # self.error_handler = FRFErrorHandler(self.accept_errors)
+        self.error_handler = kwargs.pop("error_handler", None)
         self.app = app
         self.db = None
         self.ApiView = None
@@ -31,6 +37,16 @@ class FlaskRestFramework(object):
         if not self.db:
             raise ImportError("未找到sqlalchemy,请确认是否已安装sqlalchemy"
                               "并将本extension的初始化置于sqlalchemy初始化之后")
+        # 注册frf错误处理
+        if self.error_handler:
+            self.error_handler.register_handler(app)
+        else:
+            self.error_handler = FRFErrorHandler(self.accept_errors)
+            self.error_handler.register_handler(app)
+
+        # 注册全局请求权限处理
+        if self.global_request_auth_cls:
+            app.before_request(self.global_request_auth_cls.auth)
 
     # todo usual logger
     # html api

@@ -3,7 +3,7 @@ from functools import wraps
 from flask import jsonify, request
 from flask.views import MethodView
 
-from .exceptions import ArgumentException
+from .exceptions import ArgumentException, DataAuthException, RequestAuthException
 
 from .response_code import RET
 from .query import DataQuery
@@ -13,12 +13,27 @@ from .response_code import error_map
 def request_wrapper(func):
     @wraps(func)
     def wrapper(self, *args, **kwargs):
-        # 这里处理传入参数
-        self.dispatch_before_request()
-        # 这里写查询和序列化将返回的结果交给下一个
-        result = func(self, *args, **kwargs)
-        # 这里包装返回的参数
-        result = self.dispatch_after_request(result)
+        # view级别的权限处理
+        # 返回成功True或失败False
+        if self.request_auth:
+            if not self.request_auth():
+                raise RequestAuthException
+        try:
+            # 这里处理传入参数
+            self.dispatch_before_request()
+            # 这里写查询和序列化将返回的结果交给下一个
+            # view级别的数据参数处理
+            if self.data_auth:
+                if not self.data_auth(self):
+                    raise DataAuthException
+            result = func(self, *args, **kwargs)
+            # 这里包装返回的参数
+            result = self.dispatch_after_request(result)
+        except Exception as e:
+            if self.local_error_handler:
+                return self.local_error_handler(e)
+            else:
+                raise e
         return result
 
     return wrapper
@@ -36,6 +51,9 @@ class ApiView(MethodView):
     like_fields = None
     order_by_fields = None
     query_cls = DataQuery
+
+    request_auth = None
+    data_auth = None
 
     @staticmethod
     def empty_response():
@@ -65,12 +83,9 @@ class ApiView(MethodView):
 
         # 组合参数
         self.data = self.get_data()
-        print(self.data)
         if not self.data:
-            print(123)
             self.data = {}
 
-        print("data", self.data)
         # 通过serializer的model_class来获取一个基础查询
         self.qs = DataQuery(self.serializer.model_class, data=self.data, pk_field=self.pk_field,
                             fields=self.serializer.fields, paginate_field=self.paginate_field, query_set=self.query_set)
@@ -87,7 +102,6 @@ class ApiView(MethodView):
         if request.method.lower() == "get":
             if self.pk_field in request.args:
                 meth = getattr(self, 'retrieve', None)
-                print(meth)
         self.meth = meth
         assert meth is not None, 'Unimplemented method %r' % request.method
         return meth(*args, **kwargs)
@@ -141,7 +155,6 @@ class ApiView(MethodView):
     def default_result_handler(self, result):
         # 如果是两个参数 code, data 两个参数的时候会使用默认的code对应的msg
         # 如果是三个参数 code, msg, data
-        print(type(result))
         if len(result) == 3:
             return jsonify(code=result[0], msg=result[1], data=result[2])
         elif len(result) == 2:
