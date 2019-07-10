@@ -49,6 +49,7 @@ class Person(db.Model):
 
 class PersonSerializer(Serializer):
     model_class = Person
+    logical_delete = None
 
 
 class PersonView(GetView):
