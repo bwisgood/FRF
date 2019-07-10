@@ -67,7 +67,23 @@ def test_read_only(client):
     assert person.get("gender") == resp_data.get("gender")
 
     # 修改单人的数据
-    resp = client.put("/persons")
+    resp = client.put("/persons", json={"id": person.get("id"), "name": "modified"},
+                      headers={"Content-Type": "application/json"})
+    assert resp.status_code == 200
+    assert resp.json.get("data").get("name") == "modified"
+
+    # 查询看看有没有修改
+    resp = client.get("/persons?id={}".format(person.get("id")))
+    assert resp.status_code == 200
+    assert resp.json.get("data").get("name") == "modified"
+    # 删除这个人
+    resp = client.delete("/persons", json={"id": person.get("id")}, headers={"Content-Type": "application/json"})
+    assert resp.status_code == 200
+    assert resp.json.get("code") == '0'
+
+    resp = client.get("/persons?id={}".format(person.get("id")))
+    assert resp.status_code == 200
+    assert resp.json.get("code") == '4002'
 
 
 if __name__ == '__main__':

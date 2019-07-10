@@ -173,7 +173,7 @@ class Serializer(object):
         data = self.filter_table_data(data)
         # 在做一次参数校验
         data = self.validate(data)
-        for k, v in data:
+        for k, v in data.items():
             setattr(instance, k, v)
         qs.commit()
         return self.serialize(instance)

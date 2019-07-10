@@ -54,6 +54,7 @@ class ApiView(MethodView):
 
     request_auth = None
     data_auth = None
+    local_error_handler = None
 
     @staticmethod
     def empty_response():
