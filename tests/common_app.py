@@ -68,19 +68,23 @@ class PersonDeleteView(DeleteView):
     serializer = PersonSerializer
 
 
-class PersonRetrieveView(DeleteView):
+from v3.mixins import AllMethodMixin, ReadOnlyMixin
+
+
+class PersonRetrieveView(AllMethodMixin):
     serializer = PersonSerializer
 
 
 app = config()
 
-app.add_url_rule('/persons', view_func=PersonView.as_view("person_view"))
-app.add_url_rule('/persons', view_func=PersonPostView.as_view("person_view_post"))
-app.add_url_rule('/persons', view_func=PersonPutView.as_view("person_view_put"))
-app.add_url_rule('/persons', view_func=PersonDeleteView.as_view("person_view_delete"))
+# app.add_url_rule('/persons', view_func=PersonView.as_view("person_view"))
+# app.add_url_rule('/persons', view_func=PersonPostView.as_view("person_view_post"))
+# app.add_url_rule('/persons', view_func=PersonPutView.as_view("person_view_put"))
+# app.add_url_rule('/persons', view_func=PersonDeleteView.as_view("person_view_delete"))
 app.add_url_rule('/persons', view_func=PersonRetrieveView.as_view("person_view_re"))
 
 if __name__ == '__main__':
     ap = app.test_client()
     ap.post()
+    ap.get()
     app.run(debug=True)
