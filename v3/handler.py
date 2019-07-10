@@ -1,6 +1,6 @@
 from functools import wraps
 
-from flask import jsonify, request
+from flask import jsonify, request, g
 from flask.views import MethodView
 
 from .exceptions import ArgumentException, DataAuthException, RequestAuthException
@@ -55,6 +55,8 @@ class ApiView(MethodView):
     request_auth = None
     data_auth = None
     local_error_handler = None
+
+    add_g_data = True
 
     @staticmethod
     def empty_response():
@@ -187,12 +189,18 @@ class ApiView(MethodView):
         return request_data
 
     def get_data(self):
+        temp_data = {}
+        if self.add_g_data:
+            for gdi, gd in g.__dict__.items():
+                if isinstance(gd, int) or isinstance(gd, str):
+                    temp_data.update(**{gdi: gd})
         if request.method.lower() in ["get", "option", "head"]:
-            return self.url_data
+            temp_data.update(**self.url_data)
         else:
             self.body_data.update(**self.url_data)
-            return self.body_data
+            temp_data.update(**self.body_data)
 
+        return temp_data
     # def filter_request_url_data(self):
     #     # 过滤请求数据查询对应的值
     #     filter_data = dict(filter(lambda x: x[0] in self.look_up, self.url_data.items()))
