@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="302d09d8-6bd4-4b4f-ba1d-796d63628028" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/tests/common_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/common_app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_app_load.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_app_load.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/v3/handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/v3/handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/v3/serializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/v3/serializer.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,7 +19,7 @@
     <SUITE FILE_PATH="coverage/FRF$__init____1_.coverage" NAME="__init__ (1) Coverage Results" MODIFIED="1560493936986" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/FRF$wrapper.coverage" NAME="wrapper Coverage Results" MODIFIED="1562566559836" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/v2" />
     <SUITE FILE_PATH="coverage/FRF$p_test.coverage" NAME="p_test Coverage Results" MODIFIED="1562758551780" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/FRF$test_app_load.coverage" NAME="test_app_load Coverage Results" MODIFIED="1562768238425" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/FRF$test_app_load.coverage" NAME="test_app_load Coverage Results" MODIFIED="1562768262102" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/FRF$common_app.coverage" NAME="common_app Coverage Results" MODIFIED="1562682345888" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
   </component>
   <component name="FileColors">
@@ -32,11 +29,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tests/test_app_load.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="156">
-              <caret line="84" column="34" lean-forward="true" selection-start-line="84" selection-start-column="34" selection-end-line="84" selection-end-column="34" />
+            <state relative-caret-position="671">
+              <caret line="82" selection-start-line="82" selection-end-line="82" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -48,7 +45,7 @@
         <entry file="file://$PROJECT_DIR$/tests/common_app.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="118">
-              <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
+              <caret line="52" selection-start-line="52" selection-end-line="52" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -102,10 +99,25 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/virtualenv/frf/lib/python3.5/site-packages/werkzeug/_compat.py">
+        <entry file="file://$PROJECT_DIR$/v3/wrapper.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="116">
-              <caret line="192" selection-start-line="192" selection-end-line="192" />
+            <state relative-caret-position="-504">
+              <caret line="47" column="40" selection-start-line="47" selection-start-column="40" selection-end-line="47" selection-end-column="40" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/v3/handler.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="191" column="22" selection-start-line="191" selection-start-column="22" selection-end-line="191" selection-end-column="22" />
+              <folding>
+                <element signature="e#0#27#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -114,21 +126,9 @@
         <entry file="file://$PROJECT_DIR$/v3/serializer.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="111">
-              <caret line="10" column="37" lean-forward="true" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
+              <caret line="10" column="37" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/v3/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="54" selection-start-line="54" selection-end-line="54" />
-              <folding>
-                <element signature="e#0#25#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -212,10 +212,10 @@
         <option value="$PROJECT_DIR$/v3/wrapper.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/__init__.py" />
-        <option value="$PROJECT_DIR$/v3/handler.py" />
         <option value="$PROJECT_DIR$/v3/serializer.py" />
         <option value="$PROJECT_DIR$/tests/common_app.py" />
         <option value="$PROJECT_DIR$/tests/test_app_load.py" />
+        <option value="$PROJECT_DIR$/v3/handler.py" />
       </list>
     </option>
   </component>
@@ -436,12 +436,12 @@
       <workItem from="1562339228704" duration="206000" />
       <workItem from="1562339486479" duration="778000" />
       <workItem from="1562353576367" duration="5008000" />
-      <workItem from="1562578702464" duration="48058000" />
+      <workItem from="1562578702464" duration="48884000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="182599000" />
+    <option name="totallyTimeSpent" value="183425000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -456,12 +456,12 @@
     <frame x="0" y="23" width="1280" height="777" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49891067" visible="true" weight="0.24798061" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49891067" visible="true" weight="0.24798061" />
       <window_info id="Structure" order="1" sideWeight="0.50108933" side_tool="true" weight="0.12035541" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.44379562" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.44379562" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.42043796" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -469,7 +469,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4911147" weight="0.3810219" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4911147" visible="true" weight="0.3810219" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5088853" side_tool="true" weight="0.33576643" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.32846716" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -807,26 +807,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/v3/handler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="139" selection-start-line="139" selection-end-line="139" />
-          <folding>
-            <element signature="e#0#27#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/v3/wrapper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8">
-          <caret line="47" column="40" lean-forward="true" selection-start-line="47" selection-start-column="40" selection-end-line="47" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/v3/query.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="224">
@@ -909,7 +889,7 @@
     <entry file="file://$PROJECT_DIR$/v3/serializer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="111">
-          <caret line="10" column="37" lean-forward="true" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
+          <caret line="10" column="37" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
@@ -919,7 +899,7 @@
     <entry file="file://$PROJECT_DIR$/tests/common_app.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="118">
-          <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
+          <caret line="52" selection-start-line="52" selection-end-line="52" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
@@ -928,10 +908,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/test_app_load.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="84" column="34" lean-forward="true" selection-start-line="84" selection-start-column="34" selection-end-line="84" selection-end-column="34" />
+        <state relative-caret-position="671">
+          <caret line="82" selection-start-line="82" selection-end-line="82" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/v3/wrapper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-504">
+          <caret line="47" column="40" selection-start-line="47" selection-start-column="40" selection-end-line="47" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/v3/handler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="191" column="22" selection-start-line="191" selection-start-column="22" selection-end-line="191" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
           </folding>
         </state>
       </provider>
