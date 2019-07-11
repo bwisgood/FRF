@@ -1,20 +1,21 @@
-language: python
+sudo: required
 
-services:
-	- mysql
+language: python
 
 python:
   - "3.5"
   - "3.6"
-  - "3.7"
+
+services:
+  - mysql
 
 before_install:
-	- sudo mysql -e 'CREATE DATABASE IF NOT EXISTS test;'
-	- sudo mysql -e 'use test;'
-    - sudo mysql -e 'CREATE TABLE `person` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(30) DEFAULT NULL,`gender` varchar(30) DEFAULT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb4'
+  - sudo mysql -e 'CREATE DATABASE IF NOT EXISTS test;'
+  - sudo mysql -e 'use test;'
+  - sudo mysql -e 'CREATE TABLE `person` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(30) DEFAULT NULL,`gender` varchar(30) DEFAULT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb4'
 
 install:
   - pip install -r requirements.txt
 
 script:
-  - pytest --cov=v3 tests/
+  - pytest --cov=v3 tests
