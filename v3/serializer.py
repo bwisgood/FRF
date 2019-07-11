@@ -178,18 +178,6 @@ class Serializer(object):
         qs.commit()
         return self.serialize(instance)
 
-    # def commit(self):
-    #     try:
-    #         self.db.session.commit()
-    #     except Exception:
-    #         self.db.session.rollback()
-    #         raise SQLAlchemyError
-    #
-    # def save(self, instance):
-    #     self.db.session.add(instance)
-    #
-    #     return self.serialize(instance)
-
     def delete(self, instance, qs):
         # 判断是否需要逻辑删除
         data = self.serialize(instance)
