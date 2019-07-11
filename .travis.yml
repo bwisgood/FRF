@@ -1,9 +1,16 @@
 language: python
+services:
+	- mysql
 python:
   - "3.5"
   - "3.6"
   - "3.7"
+
+before_install:
+	- sudo mysql -e 'CREATE DATABASE test;'
+    - sudo mysql -e 'CREATE TABLE `person` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(30) DEFAULT NULL,`gender` varchar(30) DEFAULT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb4'
 install:
   - pip install -r requirements.txt
+
 script:
   - pytest
