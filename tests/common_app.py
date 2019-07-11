@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
@@ -8,6 +10,7 @@ from v3.views import GetView, PostView, PutView, RetrieveView, DeleteView
 from v3.serializer import Serializer
 
 db = SQLAlchemy()
+pwd = os.environ.get("FRF_MYSQL_PASSWORD") or "mysql"
 
 
 def config():
@@ -16,7 +19,7 @@ def config():
 
     class Config(object):
         # 数据库配置
-        SQLALCHEMY_DATABASE_URI = r'mysql+pymysql://root:mysql@127.0.0.1:3306/test'
+        SQLALCHEMY_DATABASE_URI = r'mysql+pymysql://root:mysql@127.0.0.1:3306/{}'.format(pwd)
         SQLALCHEMY_TRACK_MODIFICATIONS = False
         engine = create_engine(SQLALCHEMY_DATABASE_URI)
         Base = declarative_base(engine)
@@ -32,7 +35,7 @@ def config():
 def test_without_db():
     # db = SQLAlchemy()
     app = Flask(__name__)
-    app.config["SQLALCHEMY_DATABASE_URL"] = r'mysql+pymysql://root:mysql@127.0.0.1:3306/root'
+    app.config["SQLALCHEMY_DATABASE_URL"] = r'mysql+pymysql://root:mysql@127.0.0.1:3306/{}'.format(pwd)
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config['TESTING'] = True
     # db.init_app(app)
