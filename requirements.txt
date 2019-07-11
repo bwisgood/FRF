@@ -10,9 +10,12 @@ certifi==2018.8.24
 cffi==1.11.5
 chardet==3.0.4
 click==6.7
+codecov==2.0.15
 coverage==4.5.3
+coveralls==1.8.1
 crcmod==1.7
 cryptography==2.3.1
+docopt==0.6.2
 execnet==1.6.0
 Flask==1.0.2
 Flask-Cors==3.0.6

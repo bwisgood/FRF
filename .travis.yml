@@ -19,3 +19,6 @@ install:
 
 script:
   - pytest --cov=v3 tests
+
+after_success:
+  - codecov
