@@ -12,7 +12,7 @@ services:
 before_install:
   - sudo mysql -e 'CREATE DATABASE IF NOT EXISTS test;'
   - sudo mysql -e 'use test;CREATE TABLE `person` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(30) DEFAULT NULL,`gender` varchar(30) DEFAULT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb4'
-  - sudo mysql -e "use test;insert into `person`(name, gender) values ('bw', 'male') "
+  - sudo mysql -e "use test;insert into `person`(name, gender) values ('bw', 'male');"
 
 install:
   - pip install -r requirements.txt
