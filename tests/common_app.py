@@ -19,7 +19,7 @@ def config():
 
     class Config(object):
         # 数据库配置
-        SQLALCHEMY_DATABASE_URI = r'mysql+pymysql://root:mysql@127.0.0.1:3306/{}'.format(pwd)
+        SQLALCHEMY_DATABASE_URI = r'mysql+pymysql://root:{}@127.0.0.1:3306/test'.format(pwd)
         SQLALCHEMY_TRACK_MODIFICATIONS = False
         engine = create_engine(SQLALCHEMY_DATABASE_URI)
         Base = declarative_base(engine)
@@ -35,7 +35,7 @@ def config():
 def test_without_db():
     # db = SQLAlchemy()
     app = Flask(__name__)
-    app.config["SQLALCHEMY_DATABASE_URL"] = r'mysql+pymysql://root:mysql@127.0.0.1:3306/{}'.format(pwd)
+    app.config["SQLALCHEMY_DATABASE_URL"] = r'mysql+pymysql://root:{}@127.0.0.1:3306/test'.format(pwd)
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config['TESTING'] = True
     # db.init_app(app)
