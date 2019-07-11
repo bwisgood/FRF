@@ -1,5 +1,5 @@
 import threading
-from v2.utils import translate
+from v3.utils import translate
 
 
 class DocDataCollector(object):
