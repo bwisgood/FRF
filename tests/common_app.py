@@ -16,7 +16,7 @@ def config():
 
     class Config(object):
         # 数据库配置
-        SQLALCHEMY_DATABASE_URI = r'mysql+pymysql://root:mysql@127.0.0.1:3306/root'
+        SQLALCHEMY_DATABASE_URI = r'mysql+pymysql://root:mysql@127.0.0.1:3306/test'
         SQLALCHEMY_TRACK_MODIFICATIONS = False
         engine = create_engine(SQLALCHEMY_DATABASE_URI)
         Base = declarative_base(engine)

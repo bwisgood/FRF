@@ -11,3 +11,6 @@ precision = 2
 
 [html]
 directory = coverage_html_report
+
+[tool:pytest]
+addopts = --cov=v2 --cov-report html
