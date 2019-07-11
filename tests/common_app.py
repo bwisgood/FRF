@@ -10,7 +10,7 @@ from v3.views import GetView, PostView, PutView, RetrieveView, DeleteView
 from v3.serializer import Serializer
 
 db = SQLAlchemy()
-pwd = os.environ.get("FRF_MYSQL_PASSWORD") or "mysql"
+pwd = os.environ.get("FRF_MYSQL_PASSWORD") or ""
 
 
 def config():
