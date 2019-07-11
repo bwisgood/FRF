@@ -1,0 +1,13 @@
+[paths]
+source = v3
+
+[run]
+branch = True
+
+[report]
+ignore_errors = True
+show_missing = true
+precision = 2
+
+[html]
+directory = coverage_html_report
