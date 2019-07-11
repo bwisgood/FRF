@@ -116,10 +116,9 @@ class Dict:
         return None
 
 
-d = Dict()
-
-
 def translate(word):
+    d = Dict()
+
     try:
         json_result = d.dictionary(word, dst='zh', src='en')
     except:
