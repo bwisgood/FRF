@@ -18,7 +18,7 @@ cryptography==2.3.1
 docopt==0.6.2
 execnet==1.6.0
 Flask==1.0.2
-Flask-Cors==3.0.6
+Flask-Cors==3.0.9
 Flask-Migrate==2.2.1
 Flask-Script==2.0.6
 Flask-Session==0.3.1
